@@ -1,0 +1,14 @@
+[[source]]
+url = "https://pypi.org/simple"
+verify_ssl = true
+name = "pypi"
+
+[packages]
+python-dateutil = "*"
+
+[dev-packages]
+codecov = "*"
+coverage = "*"
+
+[requires]
+python_version = "3.6"

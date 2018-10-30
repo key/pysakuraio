@@ -40,13 +40,16 @@ class ChannelData(BaseData):
     def __str__(self):
         return 'datetime=%s, type=%s, channel=%d, value=%s' % (self.datetime, self.data_type, self.channel, self.value)
 
-    def as_dict(self):
-        return {
+    def as_dict(self, without_dt=False):
+        r = {
             'type': self.type_str,
             'channel': self.channel,
             'value': self.value if self.type_ != bin else self.value.hex(),
             'datetime': self.datetime.isoformat()
         }
+        if without_dt:
+            del(r['datetime'])
+        return r
 
 
 class ChannelDataSet(object):
@@ -61,15 +64,18 @@ class ChannelDataSet(object):
         self.datetime = datetime_
         self.data = lst
 
-    def as_dict(self):
-        return {
+    def as_dict(self, without_dt=False):
+        r = {
             'module': self.module,
             'datetime': self.datetime.isoformat(),
             'type': 'channels',
             'payload': {
-                'channels': [d.as_dict() for d in self.data]
+                'channels': [d.as_dict(without_dt) for d in self.data]
             }
         }
+        if without_dt:
+            del(r['datetime'])
+        return r
 
 
 class ConnectionData(BaseData):

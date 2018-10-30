@@ -21,6 +21,11 @@ class SakuraIODataSetTestCase(TestCase):
             'value': int(timestamp),
             'datetime': isonow
         }, ch0.as_dict())
+        self.assertDictEqual({
+            'channel': 0,
+            'type': 'L',
+            'value': int(timestamp),
+        }, ch0.as_dict(without_dt=True))
 
     def test_channel_dataset(self):
         from sakuraio.data import ChannelData
@@ -89,4 +94,42 @@ class SakuraIODataSetTestCase(TestCase):
                 ]
             }
         }, message.as_dict())
+        self.assertDictEqual({
+            'module': module,
+            'type': 'channels',
+            'payload': {
+                'channels': [
+                    {
+                        'channel': 0,
+                        'type': 'L',
+                        'value': int(timestamp),
+                    },
+                    {
+                        'channel': 1,
+                        'type': 'b',
+                        'value': pack('<2f', 40.0, 140.0).hex(),
+                    },
+                    {
+                        'channel': 2,
+                        'type': 'b',
+                        'value': pack('<f2H', 3776.8, 58, 124).hex(),
+                    },
+                    {
+                        'channel': 3,
+                        'type': 'b',
+                        'value': pack('<fH2x', 18.5, 5).hex(),
+                    },
+                    {
+                        'channel': 4,
+                        'type': 'b',
+                        'value': pack('<3B5x', 1, 1, 125).hex(),
+                    },
+                    {
+                        'channel': 5,
+                        'type': 'b',
+                        'value': pack('<h2H2x', 3022, 10130, 2520).hex(),
+                    },
+                ]
+            }
+        }, message.as_dict(without_dt=True))
 
